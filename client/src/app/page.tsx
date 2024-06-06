@@ -4,20 +4,36 @@ import { Button } from "primereact/button";
 import { Input } from "@chakra-ui/react";
 
 export default function Home() {
-  const [fuelConsumption, setfuelConsumption] = useState<number>(0);
+  const [fuelConsumption, setFuelConsumption] = useState<string>("");
   const [fuelType, setFuelType] = useState<string>("HFO");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Permitir que o campo seja limpo
+    if (value === "") {
+      setFuelConsumption("");
+    } else {
+      // Apenas números positivos e ponto decimal
+      if (!isNaN(Number(value)) && Number(value) >= 0) {
+        setFuelConsumption(value);
+      }
+    }
+  };
+
   const load = () => {
     setLoading(true);
-    fetch("https://shipemissionstracker-backend-f68de0c13a90.herokuapp.com/calculate-co2", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ fuelConsumption, fuelType }),
-    })
+    fetch(
+      "https://shipemissionstracker-backend-f68de0c13a90.herokuapp.com/calculate-co2",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fuelConsumption, fuelType }),
+      }
+    )
       .then((res) => {
         res.json().then((data) => {
           setResult(data);
@@ -110,7 +126,7 @@ export default function Home() {
             type="number"
             value={fuelConsumption !== null ? fuelConsumption : ""}
             placeholder="Insira a quantidade de combustível consumida em toneladas"
-            onChange={(e) => setfuelConsumption(Number(e.target.value))}
+            onChange={handleInputChange}
             // minFractionDigits={2}
             // maxFractionDigits={5}
             className="p-2 rounded-md border border-gray-300 w-full"
