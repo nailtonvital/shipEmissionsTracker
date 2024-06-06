@@ -11,7 +11,7 @@ export default function Home() {
 
   const load = () => {
     setLoading(true);
-    fetch("http://localhost:3000/calculate-co2", {
+    fetch("https://shipemissionstracker-backend-f68de0c13a90.herokuapp.com/calculate-co2", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
