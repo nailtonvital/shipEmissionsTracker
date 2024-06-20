@@ -147,7 +147,7 @@ export default function Home() {
           </select>
         </div>
         <Button
-          label="Submit"
+          label="Calcular"
           icon="pi pi-check"
           loading={loading}
           onClick={load}
